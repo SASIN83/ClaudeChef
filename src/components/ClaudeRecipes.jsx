@@ -1,5 +1,5 @@
 import Markdown from 'react-markdown'
-
+import '../App.css'
 export default function ClaudeRecipe(props) {
     return (
        <section className="suggested-recipe-container">

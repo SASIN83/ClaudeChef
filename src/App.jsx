@@ -1,5 +1,5 @@
 import './App.css'
-import { useState } from 'react'
+import { useState,useRef,useEffect } from 'react'
 import IngredientsList from './components/IngredientsList.jsx';
 import ClaudeRecipe from './components/ClaudeRecipes.jsx';
 import { getRecipeFromMistral } from '../ai.js'
@@ -30,12 +30,19 @@ function App() {
   }
 }
   
-
+  const recepieReference = useRef(null);
     function removeIngredient(index) {
       const newIngredients = [...ingredients];
       newIngredients.splice(index, 1);
       setIngredients(newIngredients);
     }
+
+    useEffect(() => {
+      if (recepieReference.current && recipeShown) {
+        recepieReference.current.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, [recipeShown]);
+
   return (
     <div className="main">
       <form action={handleIngredients} className="search-bar" >
@@ -44,7 +51,7 @@ function App() {
       </form>
       <div className="ingredient-list">
         <ul>
-          {<IngredientsList ingredients={ingredients} removeIngredient={removeIngredient} toggleRecipeShown={handleRecipe} />}
+          {<IngredientsList ref={recepieReference} ingredients={ingredients} removeIngredient={removeIngredient} toggleRecipeShown={handleRecipe} />}
         </ul>
       </div>
       {loading && (
@@ -54,10 +61,11 @@ function App() {
       <span></span>
       <span></span>
       <span></span>
+      
     </div>
   </div>
 )}
-      {recipeShown && (
+      {recipeShown && !loading && (
         <div className="suggested-recipe-container">
           {<ClaudeRecipe recipe={recipe} />}
         </div>

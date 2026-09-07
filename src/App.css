@@ -141,3 +141,8 @@
     opacity: 1;
   }
 }
+.suggested-recipe-container h1 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+
+}
